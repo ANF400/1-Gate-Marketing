@@ -35,11 +35,15 @@
                 <label class="form-label small fw-bold">Posisi</label>
                 <select id="posisi" class="form-select" required>
                     <option value="" disabled selected>Pilih Divisi...</option>
-                    <option value="KOL_Affiliate">KOL & Affiliate</option>
-                    <option value="TL_Event">TL Event</option>
-                    <option value="Merchandiser_Display">Merchandiser Display</option>
+                    <option value="Admin_Ecommerce">Admin E-commerce</option>
                     <option value="Branding_Promotion">Branding & Promotion</option>
+                    <option value="Content_Creator">Content Creator</option>
+                    <option value="Design_Graphic">Design Graphic</option>
                     <option value="Ecommerce_Specialist">E-commerce Specialist</option>
+                    <option value="KOL_Affiliate">KOL & Affiliate</option>
+                    <option value="Merchandiser_Display">Merchandiser Display</option>
+                    <option value="TL_Event">TL Event</option>
+                    <option value="Trade_Marketing_Specialist">Trade Marketing Specialist</option>
                 </select>
             </div>
             <div class="mb-3">
@@ -81,7 +85,7 @@
     }
 
     navigator.geolocation.getCurrentPosition(pos => {
-        currentGps = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
+        currentGps = `http://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
     }, () => { currentGps = "Lokasi tidak diizinkan"; });
 
     document.getElementById('loginBtn').onclick = () => auth.signInWithPopup(provider);
@@ -137,7 +141,7 @@
             }
         } catch (err) {
             status.className = "alert alert-danger mt-3";
-            status.innerText = "Gagal kirim. Cek koneksi.";
+            status.innerText = "Gagal kirim. Pastikan file tidak terlalu besar.";
         } finally {
             btn.disabled = false; btn.innerText = "Kirim Laporan";
             status.classList.remove('d-none');

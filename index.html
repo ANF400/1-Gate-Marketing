@@ -22,7 +22,6 @@
     
     <div id="loginSection" class="text-center">
         <h4>Marketing Reporting</h4>
-        <p class="text-muted small">Silakan login untuk kirim laporan harian.</p>
         <button id="loginBtn" class="btn btn-outline-dark w-100 py-2">Login with Google</button>
     </div>
 
@@ -46,6 +45,12 @@
                     <option value="Trade_Marketing_Specialist">Trade Marketing Specialist</option>
                 </select>
             </div>
+            
+            <div class="mb-3">
+                <label class="form-label small fw-bold">Nama Staff</label>
+                <input type="text" id="staffNameInput" class="form-control" placeholder="Nama Lengkap..." required>
+            </div>
+
             <div class="mb-3">
                 <label class="form-label small fw-bold">Aktivitas Hari Ini</label>
                 <textarea id="aktivitas" class="form-control" rows="3" required></textarea>
@@ -68,7 +73,7 @@
 <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-auth-compat.js"></script>
 <script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycby4qyT-bqBIn450edcK2iTRR38njwiHEzsje4VBZCkRe8bn1OL2rANs9M5xZgaPzUrf/exec';
+    const scriptURL = 'PASTE_URL_WEB_APP_SCRIPT_DISINI';
 
     firebase.initializeApp({
         apiKey: "AIzaSyDBvhpl4FtPcQf54t5h_o9sFQWAEApTom0",
@@ -84,9 +89,16 @@
         document.getElementById('mainCard').innerHTML = "<h4>Akses Ditutup</h4><p>Laporan harian maksimal jam 14:00 WIB.</p>";
     }
 
-    navigator.geolocation.getCurrentPosition(pos => {
-        currentGps = `http://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
-    }, () => { currentGps = "Lokasi tidak diizinkan"; });
+    function getGPS() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(pos => {
+                currentGps = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
+            }, err => {
+                currentGps = "Lokasi tidak diizinkan";
+            });
+        }
+    }
+    getGPS();
 
     document.getElementById('loginBtn').onclick = () => auth.signInWithPopup(provider);
     document.getElementById('logoutBtn').onclick = () => auth.signOut();
@@ -97,6 +109,7 @@
             document.getElementById('formSection').classList.remove('d-none');
             document.getElementById('userImg').src = user.photoURL;
             document.getElementById('userDetails').innerHTML = `<b>${user.displayName}</b><br>${user.email}`;
+            document.getElementById('staffNameInput').value = user.displayName;
         } else {
             document.getElementById('loginSection').classList.remove('d-none');
             document.getElementById('formSection').classList.add('d-none');
@@ -121,7 +134,7 @@
             const dok = document.getElementById('dokumenFile').files[0];
 
             const payload = {
-                nama: auth.currentUser.displayName,
+                nama: document.getElementById('staffNameInput').value,
                 email: auth.currentUser.email,
                 posisi: document.getElementById('posisi').value,
                 aktivitas: document.getElementById('aktivitas').value,
@@ -138,10 +151,11 @@
                 status.className = "alert alert-success mt-3";
                 status.innerText = "Berhasil Terkirim!";
                 document.getElementById('reportForm').reset();
+                getGPS();
             }
         } catch (err) {
             status.className = "alert alert-danger mt-3";
-            status.innerText = "Gagal kirim. Pastikan file tidak terlalu besar.";
+            status.innerText = "Gagal kirim.";
         } finally {
             btn.disabled = false; btn.innerText = "Kirim Laporan";
             status.classList.remove('d-none');

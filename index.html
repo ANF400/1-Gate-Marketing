@@ -6,45 +6,125 @@
     <title>MEVAL Reporting System</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body { background: radial-gradient(circle, #FFD700 0%, #FF8C00 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; font-family: 'Segoe UI', sans-serif; padding: 20px; }
-        .glass-card { background: rgba(255, 255, 255, 0.95); border-radius: 20px; padding: 35px; width: 100%; max-width: 480px; box-shadow: 0 15px 35px rgba(0,0,0,0.2); }
-        .logo-img { max-width: 180px; display: block; margin: 0 auto 25px; }
-        .btn-meval { background: #FF8C00; color: white; font-weight: bold; border-radius: 12px; border: none; padding: 14px; width: 100%; transition: 0.3s; font-size: 1rem; }
-        .btn-meval:hover:not(:disabled) { background: #e67e00; transform: translateY(-2px); }
-        .btn-meval:disabled { background: #ccc; cursor: not-allowed; }
-        .btn-google { background: white; color: #444; border: 1px solid #ddd; padding: 12px; border-radius: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%; }
-        .user-info { background: #fff8e1; padding: 15px; border-radius: 15px; margin-bottom: 25px; display: flex; align-items: center; gap: 12px; }
-        .user-info img { width: 45px; height: 45px; border-radius: 50%; border: 2px solid #FF8C00; }
-        .gps-status { font-size: 0.75rem; padding: 8px; border-radius: 8px; margin-bottom: 15px; text-align: center; font-weight: bold; }
-        .gps-on { background: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; }
-        .gps-off { background: #ffebee; color: #c62828; border: 1px solid #ffcdd2; }
+        :root {
+            --meval-orange: #FF7F00;
+            --meval-yellow: #FFD700;
+        }
+
+        body { 
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            position: relative;
+            /* Gradasi Oren Terang ke Kuning */
+            background: linear-gradient(135deg, var(--meval-orange) 0%, var(--meval-yellow) 100%);
+            overflow-x: hidden;
+        }
+
+        /* Efek Watermark MEVAL MEVAL */
+        body::before {
+            content: "MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 150%;
+            height: 150%;
+            z-index: 0;
+            font-size: 3rem;
+            font-weight: 900;
+            color: rgba(255, 255, 255, 0.15); /* Transparan lembut */
+            transform: rotate(-25deg);
+            pointer-events: none;
+            overflow: hidden;
+            word-wrap: break-word;
+            line-height: 1.5;
+            text-align: justify;
+        }
+
+        .glass-card { 
+            background: rgba(255, 255, 255, 0.95); 
+            border-radius: 25px; 
+            padding: 30px; 
+            width: 100%; 
+            max-width: 450px; 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15); 
+            position: relative;
+            z-index: 1;
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+
+        .logo-img { max-width: 160px; display: block; margin: 0 auto 20px; }
+        
+        .btn-meval { 
+            background: #FF4500; 
+            color: white; 
+            font-weight: bold; 
+            border-radius: 12px; 
+            border: none; 
+            padding: 12px; 
+            width: 100%; 
+            transition: 0.3s;
+            box-shadow: 0 4px 10px rgba(255, 69, 0, 0.3);
+        }
+        
+        .btn-meval:hover:not(:disabled) { background: #E63E00; transform: translateY(-2px); }
+        .btn-meval:disabled { background: #bbb; cursor: not-allowed; }
+
+        .btn-google { 
+            background: white; 
+            color: #444; 
+            border: 1px solid #ddd; 
+            padding: 12px; 
+            border-radius: 12px; 
+            font-weight: 600; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 10px; 
+            width: 100%; 
+        }
+
+        .user-info { background: #FFF4E6; padding: 12px; border-radius: 15px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; border: 1px solid #FFE0B2; }
+        .user-info img { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--meval-orange); }
+
+        .gps-status { font-size: 0.75rem; padding: 10px; border-radius: 10px; margin-bottom: 15px; text-align: center; font-weight: bold; }
+        .gps-on { background: #D4EDDA; color: #155724; border: 1px solid #C3E6CB; }
+        .gps-off { background: #F8D7DA; color: #721C24; border: 1px solid #F5C6CB; }
+
         .d-none { display: none !important; }
+        label { font-size: 0.85rem; font-weight: 600; margin-bottom: 5px; color: #444; }
+        .form-control, .form-select { border-radius: 10px; border: 1px solid #ddd; padding: 10px; font-size: 0.9rem; }
     </style>
 </head>
 <body>
 
-<div class="glass-card" id="mainCard">
+<div class="glass-card">
     <img src="logo-web-300x92-1.jpg" alt="MEVAL Logo" class="logo-img">
     
     <div id="loginSection" class="text-center">
-        <h4 class="fw-bold mb-3">MEVAL Reporting System</h4>
-        <p class="small text-muted mb-4">Akses terbatas. Harap aktifkan GPS Anda sebelum login.</p>
+        <h5 class="fw-bold mb-3">Reporting 1 Gate System</h5>
+        <p class="small text-muted mb-4">Harap aktifkan GPS & masuk dengan akun Google perusahaan.</p>
         <button id="loginBtn" class="btn-google">
-            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
-            Sign in with Google Account
+            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="20" alt="Google">
+            Sign in with Google
         </button>
     </div>
 
     <div id="formSection" class="d-none">
         <div class="user-info">
-            <img id="userImg" src=""><div id="userDetails" style="font-size: 0.8rem;"></div>
+            <img id="userImg" src="">
+            <div id="userDetails" style="font-size: 0.8rem; line-height: 1.2;"></div>
         </div>
 
-        <div id="gpsAlert" class="gps-status gps-off">Mencari Lokasi GPS...</div>
+        <div id="gpsAlert" class="gps-status gps-off">Sedang Mencari Lokasi GPS...</div>
 
         <form id="reportForm">
             <div class="mb-3">
-                <label class="form-label small fw-bold">Posisi / Divisi</label>
+                <label>Posisi / Divisi</label>
                 <select id="posisi" class="form-select" required>
                     <option value="" disabled selected>Pilih Divisi...</option>
                     <option value="Admin_Ecommerce">Admin E-commerce</option>
@@ -61,24 +141,27 @@
             </div>
             
             <div class="mb-3">
-                <label class="form-label small fw-bold">Nama Lengkap Staff</label>
+                <label>Nama Staff</label>
                 <input type="text" id="staffNameInput" class="form-control" required>
             </div>
 
             <div class="mb-3">
-                <label class="form-label small fw-bold">Detail Aktivitas Hari Ini</label>
-                <textarea id="aktivitas" class="form-control" rows="3" required></textarea>
+                <label>Aktivitas Hari Ini</label>
+                <textarea id="aktivitas" class="form-control" rows="3" placeholder="Apa yang Anda kerjakan?" required></textarea>
             </div>
+
             <div class="mb-3">
-                <label class="form-label small fw-bold">Foto Kegiatan (Wajib)</label>
+                <label>Foto Kegiatan (Wajib)</label>
                 <input type="file" id="fotoFile" class="form-control" accept="image/*" required>
             </div>
+
             <div class="mb-4">
-                <label class="form-label small fw-bold">File Laporan (Opsional)</label>
-                <input type="file" id="dokumenFile" class="form-control" accept=".pdf,.xlsx,.xls,.ppt,.pptx,.doc,.docx">
+                <label>Laporan File (Opsional)</label>
+                <input type="file" id="dokumenFile" class="form-control" accept=".pdf,.xlsx,.xls,.doc,.docx">
             </div>
-            <button type="submit" id="submitBtn" class="btn btn-meval" disabled>Kirim Laporan (GPS Belum Aktif)</button>
-            <button type="button" id="logoutBtn" class="btn btn-link btn-sm w-100 text-muted mt-3 text-decoration-none">Keluar</button>
+
+            <button type="submit" id="submitBtn" class="btn-meval" disabled>MENUNGGU GPS...</button>
+            <button type="button" id="logoutBtn" class="btn btn-link btn-sm w-100 text-muted mt-3 text-decoration-none small">Logout</button>
         </form>
         <div id="status" class="mt-3 text-center small d-none"></div>
     </div>
@@ -106,28 +189,33 @@
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 pos => {
-                    currentGps = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
-                    gpsAlert.innerText = "Lokasi Terkunci (Aktif)";
+                    const lat = pos.coords.latitude;
+                    const lon = pos.coords.longitude;
+                    currentGps = "https://www.google.com/maps?q=" + lat + "," + lon;
+                    
+                    gpsAlert.innerText = "GPS Terkunci (Lokasi Valid)";
                     gpsAlert.className = "gps-status gps-on";
                     submitBtn.disabled = false;
-                    submitBtn.innerText = "Kirim Laporan Sekarang";
+                    submitBtn.innerText = "KIRIM LAPORAN SEKARANG";
                 },
                 err => {
                     currentGps = null;
-                    gpsAlert.innerText = "GPS Error: Harap Izinkan Lokasi di Browser/HP Anda";
+                    let msg = "GPS Error";
+                    if(err.code == 1) msg = "Akses GPS Ditolak!";
+                    if(err.code == 2) msg = "Sinyal GPS Hilang!";
+                    if(err.code == 3) msg = "Waktu GPS Habis!";
+                    
+                    gpsAlert.innerText = msg + " Harap Aktifkan GPS.";
                     gpsAlert.className = "gps-status gps-off";
                     submitBtn.disabled = true;
-                    submitBtn.innerText = "Kirim Laporan (GPS Belum Aktif)";
+                    submitBtn.innerText = "GAGAL MENGUNCI LOKASI";
                 },
-                { enableHighAccuracy: true }
+                { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
             );
-        } else {
-            gpsAlert.innerText = "Browser tidak mendukung GPS";
-            gpsAlert.className = "gps-status gps-off";
         }
     }
 
-    setInterval(checkGPS, 5000); 
+    setInterval(checkGPS, 6000); 
 
     document.getElementById('loginBtn').onclick = () => {
         auth.signInWithPopup(provider).then(() => checkGPS());
@@ -157,14 +245,9 @@
 
     document.getElementById('reportForm').onsubmit = async (e) => {
         e.preventDefault();
-        if (!currentGps) {
-            alert("Lokasi tidak ditemukan. Pastikan GPS Anda menyala!");
-            return;
-        }
-
         const btn = document.getElementById('submitBtn');
         const status = document.getElementById('status');
-        btn.disabled = true; btn.innerText = "Sedang Mengirim...";
+        btn.disabled = true; btn.innerText = "MENGIRIM...";
         
         try {
             const foto = document.getElementById('fotoFile').files[0];
@@ -185,16 +268,17 @@
             const res = await fetch(scriptURL, { method: 'POST', body: JSON.stringify(payload) });
             const data = await res.json();
             if(data.result === 'success') {
-                status.className = "alert alert-success mt-3 small";
-                status.innerText = "Berhasil! Laporan telah terkirim.";
+                status.className = "alert alert-success mt-3";
+                status.innerText = "LAPORAN BERHASIL TERKIRIM!";
                 document.getElementById('reportForm').reset();
                 checkGPS();
             }
         } catch (err) {
-            status.className = "alert alert-danger mt-3 small";
-            status.innerText = "Gagal mengirim. Cek koneksi Anda.";
+            status.className = "alert alert-danger mt-3";
+            status.innerText = "Gagal Mengirim. Periksa koneksi/file.";
         } finally {
             btn.disabled = false;
+            btn.innerText = "KIRIM LAPORAN SEKARANG";
             status.classList.remove('d-none');
         }
     };

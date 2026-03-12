@@ -24,7 +24,6 @@
             overflow-x: hidden;
         }
 
-        /* Efek Watermark MEVAL Tekstur */
         body::before {
             content: "MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL";
             position: fixed;
@@ -129,7 +128,7 @@
                     <option value="" disabled selected>Pilih Divisi...</option>
                     <option value="Admin_Ecommerce">Admin E-commerce</option>
                     <option value="Branding_Promotion">Branding & Promotion</option>
-                    <option value="CS_Social_Media">CS Social Media</option>
+                    <option value="Socmed_Specialist">Social Media Specialist</option>
                     <option value="Content_Creator">Content Creator</option>
                     <option value="Design_Graphic">Design Graphic</option>
                     <option value="Ecommerce_Specialist">E-commerce Specialist</option>
@@ -144,6 +143,8 @@
                 <label>NAMA STAFF</label>
                 <input type="text" id="staffNameInput" class="form-control" required>
             </div>
+
+            <div id="dynamicForm"></div>
 
             <div class="mb-3">
                 <label>DETAIL AKTIVITAS</label>
@@ -212,13 +213,11 @@
                 { 
                     enableHighAccuracy: true, 
                     maximumAge: 0 
-                    // Timeout dihapus agar terus mencari
                 }
             );
         }
     }
 
-    // Interval dipercepat menjadi 4 detik untuk responsivitas
     setInterval(checkGPS, 4000); 
 
     document.getElementById('loginBtn').onclick = () => {
@@ -247,6 +246,25 @@
         reader.onerror = error => reject(error);
     });
 
+    const reportingModules = {
+  KOL_Affiliate: [
+    { label: "Jumlah KOL Baru", type: "number", id: "kolBaru" },
+    { label: "Jumlah KOL Aktif", type: "number", id: "kolAktif" },
+    { label: "Total Engagement", type: "number", id: "engagement" },
+    { label: "Total GMV", type: "number", id: "gmv" }
+  ],
+  Merchandiser_Display: [
+    { label: "Jumlah Toko Dikunjungi", type: "number", id: "tokoKunjungan" },
+    { label: "Display Diperbaiki", type: "number", id: "displayFix" },
+    { label: "Display Baru", type: "number", id: "displayBaru" }
+  ],
+  Content_Creator: [
+    { label: "Jumlah Konten Dibuat", type: "number", id: "konten" },
+    { label: "Total View", type: "number", id: "view" },
+    { label: "Total Engagement", type: "number", id: "engagement" }
+  ]
+};
+    
     document.getElementById('reportForm').onsubmit = async (e) => {
         e.preventDefault();
         const btn = document.getElementById('submitBtn');

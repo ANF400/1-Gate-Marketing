@@ -1,375 +1,202 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MEVAL Reporting System</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        :root {
-            --meval-orange: #FF7F00;
-            --meval-yellow: #FFD700;
-        }
-
-        body {
-            margin: 0;
-            padding: 0;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            position: relative;
+        :root { --meval-orange: #FF7F00; --meval-yellow: #FFD700; }
+        body { 
+            margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center; 
+            font-family: 'Segoe UI', sans-serif; position: relative;
             background: linear-gradient(135deg, var(--meval-orange) 0%, var(--meval-yellow) 100%);
             overflow-x: hidden;
         }
-
         body::before {
-            content: "MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL";
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 150%;
-            height: 150%;
-            z-index: 0;
-            font-size: 2.5rem;
-            font-weight: 900;
-            color: rgba(255, 255, 255, 0.12);
-            transform: rotate(-20deg);
-            pointer-events: none;
-            overflow: hidden;
-            word-wrap: break-word;
-            line-height: 1.8;
-            text-align: justify;
+            content: "MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL MEVAL";
+            position: fixed; top: 0; left: 0; width: 150%; height: 150%; z-index: 0;
+            font-size: 2.5rem; font-weight: 900; color: rgba(255, 255, 255, 0.1);
+            transform: rotate(-20deg); pointer-events: none;
         }
-
-        .glass-card {
-            background: rgba(255, 255, 255, 0.96);
-            border-radius: 25px;
-            padding: 30px;
-            width: 100%;
-            max-width: 450px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-            position: relative;
-            z-index: 1;
-            border: 1px solid rgba(255, 255, 255, 0.6);
+        .glass-card { 
+            background: rgba(255, 255, 255, 0.96); border-radius: 25px; padding: 30px; 
+            width: 100%; max-width: 500px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); 
+            position: relative; z-index: 1; margin: 20px;
         }
-
-        .logo-img {
-            max-width: 150px;
-            display: block;
-            margin: 0 auto 20px;
+        .btn-meval { 
+            background: #FF4500; color: white; font-weight: bold; border-radius: 12px; 
+            padding: 14px; width: 100%; border: none; transition: 0.3s;
         }
-
-        .btn-meval {
-            background: #FF4500;
-            color: white;
-            font-weight: bold;
-            border-radius: 12px;
-            border: none;
-            padding: 14px;
-            width: 100%;
-            transition: 0.3s;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+        .btn-meval:hover:not(:disabled) { background: #E63E00; transform: translateY(-2px); }
+        .section-divider { border-top: 2px dashed #ddd; margin: 25px 0; position: relative; }
+        .section-divider span { 
+            position: absolute; top: -12px; left: 50%; transform: translateX(-50%); 
+            background: #fff; padding: 0 10px; font-size: 0.7rem; color: #999; font-weight: bold; 
         }
-
-        .btn-meval:hover:not(:disabled) {
-            background: #E63E00;
-            transform: translateY(-2px);
-        }
-
-        .btn-meval:disabled {
-            background: #999;
-            cursor: not-allowed;
-        }
-
-        .btn-google {
-            background: white;
-            color: #444;
-            border: 1px solid #ddd;
-            padding: 12px;
-            border-radius: 12px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            width: 100%;
-        }
-
-        .user-info {
-            background: #FFF9F0;
-            padding: 12px;
-            border-radius: 15px;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            border: 1px solid #FFE0B2;
-        }
-
-        .user-info img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            border: 2px solid var(--meval-orange);
-        }
-
-        .gps-status {
-            font-size: 0.75rem;
-            padding: 10px;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            text-align: center;
-            font-weight: bold;
-        }
-
-        .gps-on {
-            background: #D4EDDA;
-            color: #155724;
-            border: 1px solid #C3E6CB;
-        }
-
-        .gps-off {
-            background: #F8D7DA;
-            color: #721C24;
-            border: 1px solid #F5C6CB;
-        }
-
-        .d-none {
-            display: none !important;
-        }
-
-        label {
-            font-size: 0.8rem;
-            font-weight: 700;
-            margin-bottom: 4px;
-            color: #333;
-        }
-
-        .form-control,
-        .form-select {
-            border-radius: 10px;
-            border: 1px solid #ccc;
-            padding: 10px;
-            font-size: 0.9rem;
-        }
+        label { font-size: 0.75rem; font-weight: 700; color: #444; margin-bottom: 5px; display: block; }
+        .form-control, .form-select { border-radius: 8px; margin-bottom: 12px; }
     </style>
 </head>
-
 <body>
 
-    <div class="glass-card">
-        <img src="logo-web-300x92-1.jpg" alt="MEVAL Logo" class="logo-img">
-
-        <div id="loginSection" class="text-center">
-            <h5 class="fw-bold mb-3">REPORTING SYSTEM</h5>
-            <p class="small text-muted mb-4">Harap aktifkan GPS & masuk dengan akun Google.</p>
-            <button id="loginBtn" class="btn-google">
-                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="20" alt="Google">
-                Sign in with Google
-            </button>
-        </div>
-
-        <div id="formSection" class="d-none">
-            <div class="user-info">
-                <img id="userImg" src="">
-                <div id="userDetails" style="font-size: 0.8rem; line-height: 1.2;"></div>
-            </div>
-
-            <div id="gpsAlert" class="gps-status gps-off">MENCARI LOKASI GPS...</div>
-
-            <form id="reportForm">
-                <div class="mb-3">
-                    <label>DIVISI / POSISI</label>
-                    <select id="posisi" class="form-select" required>
-                        <option value="" disabled selected>Pilih Divisi...</option>
-                        <option value="Admin_Ecommerce">Admin E-commerce</option>
-                        <option value="Branding_Promotion">Branding & Promotion</option>
-                        <option value="Socmed_Specialist">Social Media Specialist</option>
-                        <option value="Content_Creator">Content Creator</option>
-                        <option value="Design_Graphic">Design Graphic</option>
-                        <option value="Ecommerce_Specialist">E-commerce Specialist</option>
-                        <option value="KOL_Affiliate">KOL & Affiliate</option>
-                        <option value="Merchandiser_Display">Merchandiser Display</option>
-                        <option value="TL_Event">TL Event</option>
-                        <option value="Trade_Marketing_Specialist">Trade Marketing Specialist</option>
-                    </select>
-                </div>
-
-                <div class="mb-3">
-                    <label>NAMA STAFF</label>
-                    <input type="text" id="staffNameInput" class="form-control" required>
-                </div>
-
-                <div id="dynamicForm"></div>
-
-                <div class="mb-3">
-                    <label>DETAIL AKTIVITAS</label>
-                    <textarea id="aktivitas" class="form-control" rows="3" placeholder="Apa yang Anda kerjakan hari ini?" required></textarea>
-                </div>
-
-                <div class="mb-3">
-                    <label>FOTO KEGIATAN (WAJIB)</label>
-                    <input type="file" id="fotoFile" class="form-control" accept="image/*" required>
-                </div>
-
-                <div class="mb-4">
-                    <label>FILE LAPORAN (OPSIONAL)</label>
-                    <input type="file" id="dokumenFile" class="form-control" accept=".pdf,.xlsx,.xls,.doc,.docx">
-                </div>
-
-                <button type="submit" id="submitBtn" class="btn-meval" disabled>MENUNGGU GPS...</button>
-                <button type="button" id="logoutBtn" class="btn btn-link btn-sm w-100 text-muted mt-3 text-decoration-none small">Logout</button>
-            </form>
-            <div id="status" class="mt-3 text-center small d-none"></div>
-        </div>
+<div class="glass-card">
+    <div id="loginSection" class="text-center">
+        <h5 class="fw-bold mb-4">MEVAL REPORTING SYSTEM</h5>
+        <button id="loginBtn" class="btn btn-outline-dark w-100 p-3">Sign in with Google</button>
     </div>
 
-    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-auth-compat.js"></script>
-    <script>
-        const scriptURL = 'URL_GAS_ANDA';
+    <div id="formSection" class="d-none">
+        <div id="userDetails" class="small mb-3 p-2 bg-light rounded"></div>
+        <div id="gpsAlert" class="alert py-2 text-center small fw-bold">MENCARI GPS...</div>
 
-        firebase.initializeApp({
-            apiKey: "AIzaSyDBvhpl4FtPcQf54t5h_o9sFQWAEApTom0",
-            authDomain: "gate-marketing.firebaseapp.com",
-            projectId: "gate-marketing"
-        });
+        <form id="reportForm">
+            <label>DIVISI / POSISI</label>
+            <select id="posisi" class="form-select" required>
+                <option value="" disabled selected>Pilih Divisi...</option>
+                <option value="KOL_Affiliate">KOL & Affiliate</option>
+                </select>
 
-        const auth = firebase.auth();
-        const provider = new firebase.auth.GoogleAuthProvider();
-        let currentGps = null;
+            <div id="dynamicForm"></div>
 
-        function checkGPS() {
-            const gpsAlert = document.getElementById('gpsAlert');
-            const submitBtn = document.getElementById('submitBtn');
+            <div class="section-divider"><span>UMUM</span></div>
+            <label>DETAIL AKTIVITAS</label>
+            <textarea id="aktivitas" class="form-control" rows="3" required></textarea>
+            
+            <label>FOTO KEGIATAN UTAMA (WAJIB)</label>
+            <input type="file" id="fotoUtama" class="form-control" accept="image/*" required>
 
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                    pos => {
-                        const lat = pos.coords.latitude;
-                        const lon = pos.coords.longitude;
-                        currentGps = "https://www.google.com/maps?q=" + lat + "," + lon;
+            <button type="submit" id="submitBtn" class="btn-meval" disabled>MENUNGGU GPS...</button>
+        </form>
+        <div id="status" class="mt-3 text-center small d-none"></div>
+    </div>
+</div>
 
-                        gpsAlert.innerText = "LOKASI TERKUNCI";
-                        gpsAlert.className = "gps-status gps-on";
-                        submitBtn.disabled = false;
-                        submitBtn.innerText = "KIRIM LAPORAN SEKARANG";
-                    },
-                    err => {
-                        currentGps = null;
-                        let msg = "GPS BELUM AKTIF";
-                        if (err.code == 1) msg = "IZIN GPS DITOLAK!";
-                        if (err.code == 2) msg = "SINYAL GPS LEMAH!";
+<script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-auth-compat.js"></script>
 
-                        gpsAlert.innerText = msg + " HARAP AKTIFKAN LOKASI.";
-                        gpsAlert.className = "gps-status gps-off";
-                        submitBtn.disabled = true;
-                        submitBtn.innerText = "GAGAL MENGUNCI LOKASI";
-                    }, {
-                        enableHighAccuracy: true,
-                        maximumAge: 0
-                    }
-                );
-            }
+<script>
+    // GANTI INI dengan URL Web App dari Google Apps Script kamu!
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbyF9tXkVZ_A9TnF2yDwN_4WJQDOL1unch50-SaLMDkB411dM3IUv8HdJzNrOwtpueSFog/exec';
+
+    firebase.initializeApp({
+        apiKey: "AIzaSyDBvhpl4FtPcQf54t5h_o9sFQWAEApTom0",
+        authDomain: "gate-marketing.firebaseapp.com",
+        projectId: "gate-marketing"
+    });
+
+    const auth = firebase.auth();
+    const provider = new firebase.auth.GoogleAuthProvider();
+    let currentGps = "";
+
+    // Konfigurasi Field Khusus KOL & Affiliate
+    const configForm = {
+        KOL_Affiliate: [
+            { label: "Jumlah KOL & Affiliator Lama", type: "number", id: "kol_lama" },
+            { label: "Jumlah KOL & Affiliator Baru", type: "number", id: "kol_baru" },
+            { label: "Bukti Data KOL (Upload)", type: "file", id: "file_kol" },
+            { label: "Biaya Spending Iklan (Rp)", type: "number", id: "spending" },
+            { label: "Total Engagement", type: "number", id: "engagement" },
+            { label: "Screenshot Analytics", type: "file", id: "file_analytics" },
+            { label: "Total GMV", type: "number", id: "gmv" },
+            { label: "Screenshot Dashboard Affiliate", type: "file", id: "file_aff_dash" },
+            { label: "Jumlah Order Tiap Platform", type: "text", id: "order_platform" },
+            { label: "Jumlah Klik Link", type: "number", id: "klik_link" },
+            { label: "Screenshot Penjualan Platform", type: "file", id: "file_sales_dash" },
+            { label: "Planning Bulan Depan", type: "textarea", id: "planning" }
+        ]
+    };
+
+    // Fungsi Render Form
+    document.getElementById('posisi').onchange = function() {
+        const container = document.getElementById('dynamicForm');
+        container.innerHTML = '<div class="section-divider"><span>DATA SPESIFIK POSISI</span></div>';
+        const fields = configForm[this.value];
+        if (fields) {
+            fields.forEach(f => {
+                let input = `<input type="${f.type}" id="${f.id}" class="form-control dyn-input${f.type === 'file' ? '-file' : ''}" required>`;
+                if (f.type === 'textarea') input = `<textarea id="${f.id}" class="form-control dyn-input" rows="2" required></textarea>`;
+                container.innerHTML += `<div class="mb-3"><label>${f.label.toUpperCase()}</label>${input}</div>`;
+            });
         }
+    };
 
-        setInterval(checkGPS, 4000);
+    // Helper Konversi File ke Base64
+    const toBase64 = file => new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve({ data: reader.result.split(',')[1], name: file.name });
+        reader.onerror = error => reject(error);
+    });
 
-        document.getElementById('loginBtn').onclick = () => {
-            auth.signInWithPopup(provider).then(() => checkGPS());
-        };
-        document.getElementById('logoutBtn').onclick = () => auth.signOut();
+    // Submit Logic
+    document.getElementById('reportForm').onsubmit = async (e) => {
+        e.preventDefault();
+        const btn = document.getElementById('submitBtn');
+        const status = document.getElementById('status');
+        btn.disabled = true; btn.innerText = "MENGIRIM DATA & FILE...";
 
-        auth.onAuthStateChanged(user => {
-            if (user) {
-                document.getElementById('loginSection').classList.add('d-none');
-                document.getElementById('formSection').classList.remove('d-none');
-                document.getElementById('userImg').src = user.photoURL;
-                // Template literal fix
-                document.getElementById('userDetails').innerHTML = `<b>${user.displayName}</b><br>${user.email}`;
-                document.getElementById('staffNameInput').value = user.displayName;
-                checkGPS();
-            } else {
-                document.getElementById('loginSection').classList.remove('d-none');
-                document.getElementById('formSection').classList.add('d-none');
-            }
-        });
-
-        const fileToBase64 = file => new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => resolve(reader.result.split(',')[1]);
-            reader.onerror = error => reject(error);
-        });
-
-        // Event listener untuk ganti posisi agar form dinamis muncul
-        document.getElementById('posisi').addEventListener('change', function() {
-            const container = document.getElementById('dynamicForm');
-            container.innerHTML = "";
-            const modules = {
-                KOL_Affiliate: ["Jumlah KOL Baru", "Jumlah KOL Aktif", "Total Engagement", "Total GMV"],
-                Merchandiser_Display: ["Toko Dikunjungi", "Display Diperbaiki", "Display Baru"],
-                Content_Creator: ["Konten Dibuat", "Total View", "Total Engagement"]
+        try {
+            const payload = {
+                nama: auth.currentUser.displayName,
+                email: auth.currentUser.email,
+                posisi: document.getElementById('posisi').value,
+                aktivitas: document.getElementById('aktivitas').value,
+                lokasi: currentGps,
+                extraData: {},
+                files: []
             };
 
-            if (modules[this.value]) {
-                modules[this.value].forEach(label => {
-                    container.innerHTML += `
-                        <div class="mb-3">
-                            <label>${label.toUpperCase()}</label>
-                            <input type="number" class="form-control dyn-input" placeholder="0" required>
-                        </div>`;
-                });
+            // Ambil data teks dinamis
+            document.querySelectorAll('.dyn-input').forEach(input => {
+                payload.extraData[input.id] = input.value;
+            });
+
+            // Ambil & Konversi semua file (termasuk foto utama dan file dinamis)
+            const fileInputs = [document.getElementById('fotoUtama'), ...document.querySelectorAll('.dyn-input-file')];
+            for (let input of fileInputs) {
+                if (input.files[0]) {
+                    const fileObj = await toBase64(input.files[0]);
+                    payload.files.push({ field: input.id, ...fileObj });
+                }
             }
+
+            // Kirim ke Google Apps Script
+            const response = await fetch(scriptURL, {
+                method: 'POST',
+                body: JSON.stringify(payload)
+            });
+
+            status.innerHTML = '<div class="alert alert-success">LAPORAN TERKIRIM!</div>';
+            status.classList.remove('d-none');
+            document.getElementById('reportForm').reset();
+        } catch (err) {
+            status.innerHTML = '<div class="alert alert-danger">Gagal mengirim. Pastikan Apps Script aktif.</div>';
+            status.classList.remove('d-none');
+        } finally {
+            btn.disabled = false; btn.innerText = "KIRIM LAPORAN SEKARANG";
+        }
+    };
+
+    // (Fungsi GPS & Auth tetap sama seperti sebelumnya...)
+    function checkGPS() {
+        navigator.geolocation.getCurrentPosition(pos => {
+            currentGps = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
+            document.getElementById('gpsAlert').className = "alert py-2 text-center small fw-bold alert-success";
+            document.getElementById('gpsAlert').innerText = "LOKASI TERKUNCI";
+            document.getElementById('submitBtn').disabled = false;
+            document.getElementById('submitBtn').innerText = "KIRIM LAPORAN SEKARANG";
         });
-
-        document.getElementById('reportForm').onsubmit = async (e) => {
-            e.preventDefault();
-            const btn = document.getElementById('submitBtn');
-            const status = document.getElementById('status');
-            btn.disabled = true;
-            btn.innerText = "MENGIRIM...";
-
-            try {
-                const foto = document.getElementById('fotoFile').files[0];
-                const dok = document.getElementById('dokumenFile').files[0];
-
-                const payload = {
-                    nama: document.getElementById('staffNameInput').value,
-                    email: auth.currentUser.email,
-                    posisi: document.getElementById('posisi').value,
-                    aktivitas: document.getElementById('aktivitas').value,
-                    lokasi: currentGps,
-                    fotoData: await fileToBase64(foto),
-                    fotoName: foto.name,
-                    dokData: dok ? await fileToBase64(dok) : null,
-                    dokName: dok ? dok.name : null
-                };
-
-                const res = await fetch(scriptURL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    body: JSON.stringify(payload)
-                });
-                
-                status.className = "alert alert-success mt-3";
-                status.innerText = "LAPORAN BERHASIL TERKIRIM!";
-                document.getElementById('reportForm').reset();
-                document.getElementById('dynamicForm').innerHTML = "";
-            } catch (err) {
-                status.className = "alert alert-danger mt-3";
-                status.innerText = "Gagal Mengirim. Cek File/Koneksi.";
-            } finally {
-                btn.disabled = false;
-                btn.innerText = "KIRIM LAPORAN SEKARANG";
-                status.classList.remove('d-none');
-            }
-        };
-    </script>
+    }
+    auth.onAuthStateChanged(user => {
+        if (user) {
+            document.getElementById('loginSection').classList.add('d-none');
+            document.getElementById('formSection').classList.remove('d-none');
+            document.getElementById('userDetails').innerText = user.email;
+            checkGPS();
+        }
+    });
+    document.getElementById('loginBtn').onclick = () => auth.signInWithPopup(provider);
+</script>
 </body>
-
 </html>

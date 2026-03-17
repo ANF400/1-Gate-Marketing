@@ -1,216 +1,183 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MEVAL Reporting System</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <style>
-        body { 
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, #FF7F00, #FFD700);
-            font-family: sans-serif;
-        }
-
-        .glass-card { 
-            background: #fff; 
-            border-radius: 20px; 
-            padding: 25px; 
-            width: 100%; 
-            max-width: 450px; 
-        }
-
-        .btn-meval { 
-            background: #FF4500; 
-            color: white; 
-            border-radius: 10px; 
-            padding: 12px; 
-            width: 100%; 
-        }
-
-        .d-none { display: none !important; }
-    </style>
-</head>
-
-<body>
-
-<div class="glass-card">
-
-    <div id="loginSection" class="text-center">
-        <h5>REPORTING SYSTEM</h5>
-        <button id="loginBtn" class="btn btn-outline-dark">Login Google</button>
-    </div>
-
-    <div id="formSection" class="d-none">
-
-        <form id="reportForm">
-
-            <div class="mb-3">
-                <label>DIVISI / POSISI</label>
-                <select id="posisi" class="form-select" required>
-                    <option value="">Pilih Posisi</option>
-                    <option value="KOL_Affiliate">KOL & Affiliate</option>
-                    <option value="Merchandiser_Display">Merchandiser Display</option>
-                    <option value="Content_Creator">Content Creator</option>
-                </select>
-            </div>
-
-            <div class="mb-3">
-                <label>NAMA STAFF</label>
-                <input type="text" id="staffNameInput" class="form-control" required>
-            </div>
-
-            <!-- DYNAMIC SECTION -->
-            <div id="dynamicForm"></div>
-
-            <div class="mb-3">
-                <label>DETAIL AKTIVITAS</label>
-                <textarea id="aktivitas" class="form-control"></textarea>
-            </div>
-
-            <div class="mb-3">
-                <label>FOTO KEGIATAN</label>
-                <input type="file" id="fotoFile" class="form-control" required>
-            </div>
-
-            <button type="submit" id="submitBtn" class="btn-meval">
-                KIRIM LAPORAN
-            </button>
-
-        </form>
-
-    </div>
-</div>
-
-<script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-auth-compat.js"></script>
+<!-- HANYA BAGIAN SCRIPT YANG DIUPDATE -->
 
 <script>
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbyF9tXkVZ_A9TnF2yDwN_4WJQDOL1unch50-SaLMDkB411dM3IUv8HdJzNrOwtpueSFog/exec';
 
-// ================= FIREBASE =================
-firebase.initializeApp({
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_DOMAIN"
-});
-
-const auth = firebase.auth();
-const provider = new firebase.auth.GoogleAuthProvider();
-
-document.getElementById('loginBtn').onclick = () => {
-    auth.signInWithPopup(provider);
-};
-
-auth.onAuthStateChanged(user => {
-    if (user) {
-        document.getElementById('loginSection').classList.add('d-none');
-        document.getElementById('formSection').classList.remove('d-none');
-        document.getElementById('staffNameInput').value = user.displayName;
-    }
-});
-
-
-// ================= KPI MODULE =================
-const reportingModules = {
-
-    KOL_Affiliate: [
-        { label: "Jumlah KOL Baru", id: "kolBaru" },
-        { label: "Jumlah KOL Aktif", id: "kolAktif" },
-        { label: "Total Engagement", id: "engagement" },
-        { label: "Total GMV", id: "gmv" }
-    ],
-
-    Merchandiser_Display: [
-        { label: "Jumlah Toko Dikunjungi", id: "kunjungan" },
-        { label: "Display Baru", id: "displayBaru" }
-    ],
-
-    Content_Creator: [
-        { label: "Jumlah Konten", id: "konten" },
-        { label: "Total View", id: "view" }
-    ]
-};
-
-
-// ================= RENDER FORM =================
-document.getElementById('posisi').addEventListener('change', function () {
-    renderDynamicForm(this.value);
-});
-
-function renderDynamicForm(posisi) {
-    const container = document.getElementById('dynamicForm');
-    container.innerHTML = '';
-
-    if (!reportingModules[posisi]) return;
-
-    let html = `<hr><h6>SUMMARY KPI</h6>`;
-
-    reportingModules[posisi].forEach(item => {
-        html += `
-        <div class="mb-2">
-            <label>${item.label}</label>
-            <input type="number" id="${item.id}" class="form-control" required>
-        </div>
-        `;
+    firebase.initializeApp({
+        apiKey: "AIzaSyDBvhpl4FtPcQf54t5h_o9sFQWAEApTom0",
+        authDomain: "gate-marketing.firebaseapp.com",
+        projectId: "gate-marketing"
     });
 
-    // KHUSUS KOL
-    if (posisi === "KOL_Affiliate") {
-        html += `
-        <hr>
-        <h6>Tambahan KPI KOL</h6>
+    const auth = firebase.auth();
+    const provider = new firebase.auth.GoogleAuthProvider();
+    let currentGps = null;
 
-        <div class="mb-2">
-            <label>Jumlah Campaign</label>
-            <input type="number" id="campaign" class="form-control">
-        </div>
+    function checkGPS() {
+        const gpsAlert = document.getElementById('gpsAlert');
+        const submitBtn = document.getElementById('submitBtn');
 
-        <div class="mb-2">
-            <label>Conversion Rate (%)</label>
-            <input type="number" id="conversion" class="form-control">
-        </div>
-
-        <div class="mb-2">
-            <label>Top KOL</label>
-            <input type="text" id="topKol" class="form-control">
-        </div>
-
-        <div class="mb-2">
-            <label>Link Evidence</label>
-            <input type="text" id="linkEvidence" class="form-control">
-        </div>
-        `;
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                pos => {
+                    const lat = pos.coords.latitude;
+                    const lon = pos.coords.longitude;
+                    currentGps = "https://www.google.com/maps?q=" + lat + "," + lon;
+                    
+                    gpsAlert.innerText = "LOKASI TERKUNCI";
+                    gpsAlert.className = "gps-status gps-on";
+                    submitBtn.disabled = false;
+                    submitBtn.innerText = "KIRIM LAPORAN SEKARANG";
+                },
+                err => {
+                    currentGps = null;
+                    gpsAlert.innerText = "GPS BELUM AKTIF";
+                    gpsAlert.className = "gps-status gps-off";
+                    submitBtn.disabled = true;
+                }
+            );
+        }
     }
 
-    container.innerHTML = html;
-}
+    setInterval(checkGPS, 4000); 
 
-
-// ================= SUBMIT =================
-document.getElementById('reportForm').onsubmit = async (e) => {
-    e.preventDefault();
-
-    const payload = {
-        nama: document.getElementById('staffNameInput').value,
-        posisi: document.getElementById('posisi').value,
-        aktivitas: document.getElementById('aktivitas').value
+    document.getElementById('loginBtn').onclick = () => {
+        auth.signInWithPopup(provider).then(() => checkGPS());
     };
 
-    // ambil semua input dinamis
-    const inputs = document.querySelectorAll('#dynamicForm input');
-    inputs.forEach(input => {
-        payload[input.id] = input.value;
+    document.getElementById('logoutBtn').onclick = () => auth.signOut();
+
+    auth.onAuthStateChanged(user => {
+        if (user) {
+            document.getElementById('loginSection').classList.add('d-none');
+            document.getElementById('formSection').classList.remove('d-none');
+            document.getElementById('staffNameInput').value = user.displayName;
+            checkGPS();
+        } else {
+            document.getElementById('loginSection').classList.remove('d-none');
+            document.getElementById('formSection').classList.add('d-none');
+        }
     });
 
-    console.log("DATA DIKIRIM:", payload);
+    const fileToBase64 = file => new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result.split(',')[1]);
+        reader.onerror = error => reject(error);
+    });
 
-    alert("Berhasil (cek console dulu)");
-};
+    // =========================
+    // MODULE KPI (ASLI + TETAP)
+    // =========================
+    const reportingModules = {
+        KOL_Affiliate: [
+            { label: "Jumlah KOL Baru", type: "number", id: "kolBaru" },
+            { label: "Jumlah KOL Aktif", type: "number", id: "kolAktif" },
+            { label: "Total Engagement", type: "number", id: "engagement" },
+            { label: "Total GMV", type: "number", id: "gmv" }
+        ],
+        Merchandiser_Display: [
+            { label: "Jumlah Toko Dikunjungi", type: "number", id: "tokoKunjungan" },
+            { label: "Display Diperbaiki", type: "number", id: "displayFix" },
+            { label: "Display Baru", type: "number", id: "displayBaru" }
+        ],
+        Content_Creator: [
+            { label: "Jumlah Konten Dibuat", type: "number", id: "konten" },
+            { label: "Total View", type: "number", id: "view" },
+            { label: "Total Engagement", type: "number", id: "engagement" }
+        ]
+    };
 
+    // =========================
+    // 🔥 TAMBAHAN DYNAMIC FORM
+    // =========================
+    document.getElementById('posisi').addEventListener('change', function () {
+        renderDynamicForm(this.value);
+    });
+
+    function renderDynamicForm(posisi) {
+        const container = document.getElementById('dynamicForm');
+        container.innerHTML = '';
+
+        if (!reportingModules[posisi]) return;
+
+        let html = `<div class="mb-3"><label>SUMMARY KPI REPORT</label></div>`;
+
+        reportingModules[posisi].forEach(item => {
+            html += `
+            <div class="mb-2">
+                <label>${item.label}</label>
+                <input type="${item.type}" id="${item.id}" class="form-control" required>
+            </div>
+            `;
+        });
+
+        // KHUSUS KOL
+        if (posisi === "KOL_Affiliate") {
+            html += `
+            <hr>
+            <div class="mb-2">
+                <label>Jumlah Campaign</label>
+                <input type="number" id="campaign" class="form-control">
+            </div>
+
+            <div class="mb-2">
+                <label>Conversion Rate (%)</label>
+                <input type="number" id="conversion" class="form-control">
+            </div>
+
+            <div class="mb-2">
+                <label>Top KOL</label>
+                <input type="text" id="topKol" class="form-control">
+            </div>
+
+            <div class="mb-2">
+                <label>Link Evidence</label>
+                <input type="text" id="linkEvidence" class="form-control">
+            </div>
+            `;
+        }
+
+        container.innerHTML = html;
+    }
+
+    // =========================
+    // SUBMIT (DITAMBAH DINAMIC)
+    // =========================
+    document.getElementById('reportForm').onsubmit = async (e) => {
+        e.preventDefault();
+        const btn = document.getElementById('submitBtn');
+        btn.disabled = true;
+
+        try {
+            const foto = document.getElementById('fotoFile').files[0];
+
+            const payload = {
+                nama: document.getElementById('staffNameInput').value,
+                email: auth.currentUser.email,
+                posisi: document.getElementById('posisi').value,
+                aktivitas: document.getElementById('aktivitas').value,
+                lokasi: currentGps,
+                fotoData: await fileToBase64(foto),
+                fotoName: foto.name
+            };
+
+            // 🔥 ambil dynamic input
+            const dynamicInputs = document.querySelectorAll('#dynamicForm input');
+            dynamicInputs.forEach(input => {
+                payload[input.id] = input.value;
+            });
+
+            await fetch(scriptURL, { method: 'POST', body: JSON.stringify(payload) });
+
+            alert("Laporan berhasil dikirim!");
+            document.getElementById('reportForm').reset();
+            document.getElementById('dynamicForm').innerHTML = '';
+
+        } catch (err) {
+            alert("Gagal kirim");
+        }
+
+        btn.disabled = false;
+    };
 </script>
-
-</body>
-</html>

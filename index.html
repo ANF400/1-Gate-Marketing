@@ -5,95 +5,84 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MEVAL Reporting System</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        :root {
-            --meval-orange: #FF7F00;
-            --meval-yellow: #FFD700;
-        }
 
+    <style>
         body { 
-            margin: 0;
-            padding: 0;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background: linear-gradient(135deg, var(--meval-orange), var(--meval-yellow));
+            background: linear-gradient(135deg, #FF7F00, #FFD700);
+            font-family: sans-serif;
         }
 
         .glass-card { 
-            background: rgba(255, 255, 255, 0.96); 
-            border-radius: 25px; 
-            padding: 30px; 
+            background: #fff; 
+            border-radius: 20px; 
+            padding: 25px; 
             width: 100%; 
             max-width: 450px; 
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2); 
         }
 
         .btn-meval { 
             background: #FF4500; 
             color: white; 
-            font-weight: bold; 
-            border-radius: 12px; 
-            border: none; 
-            padding: 14px; 
-            width: 100%; 
-        }
-
-        .btn-google { 
-            background: white; 
-            border: 1px solid #ddd; 
+            border-radius: 10px; 
             padding: 12px; 
-            border-radius: 12px; 
             width: 100%; 
         }
 
         .d-none { display: none !important; }
     </style>
 </head>
+
 <body>
 
 <div class="glass-card">
-    
+
     <div id="loginSection" class="text-center">
         <h5>REPORTING SYSTEM</h5>
-        <button id="loginBtn" class="btn-google">Sign in Google</button>
+        <button id="loginBtn" class="btn btn-outline-dark">Login Google</button>
     </div>
 
     <div id="formSection" class="d-none">
+
         <form id="reportForm">
 
             <div class="mb-3">
-                <label>POSISI</label>
+                <label>DIVISI / POSISI</label>
                 <select id="posisi" class="form-select" required>
-                    <option value="">Pilih</option>
-                    <option value="KOL_Affiliate">KOL Affiliate</option>
-                    <option value="Merchandiser_Display">Merchandiser</option>
+                    <option value="">Pilih Posisi</option>
+                    <option value="KOL_Affiliate">KOL & Affiliate</option>
+                    <option value="Merchandiser_Display">Merchandiser Display</option>
                     <option value="Content_Creator">Content Creator</option>
                 </select>
             </div>
 
             <div class="mb-3">
-                <label>Nama</label>
+                <label>NAMA STAFF</label>
                 <input type="text" id="staffNameInput" class="form-control" required>
             </div>
 
-            <!-- DYNAMIC FORM -->
+            <!-- DYNAMIC SECTION -->
             <div id="dynamicForm"></div>
 
             <div class="mb-3">
-                <label>Aktivitas</label>
+                <label>DETAIL AKTIVITAS</label>
                 <textarea id="aktivitas" class="form-control"></textarea>
             </div>
 
             <div class="mb-3">
-                <label>Foto</label>
+                <label>FOTO KEGIATAN</label>
                 <input type="file" id="fotoFile" class="form-control" required>
             </div>
 
-            <button type="submit" id="submitBtn" class="btn-meval">Submit</button>
+            <button type="submit" id="submitBtn" class="btn-meval">
+                KIRIM LAPORAN
+            </button>
+
         </form>
+
     </div>
 </div>
 
@@ -102,8 +91,9 @@
 
 <script>
 
+// ================= FIREBASE =================
 firebase.initializeApp({
-    apiKey: "YOUR_API",
+    apiKey: "YOUR_API_KEY",
     authDomain: "YOUR_DOMAIN"
 });
 
@@ -123,9 +113,7 @@ auth.onAuthStateChanged(user => {
 });
 
 
-// ======================
-// MODULE KPI
-// ======================
+// ================= KPI MODULE =================
 const reportingModules = {
 
     KOL_Affiliate: [
@@ -136,7 +124,7 @@ const reportingModules = {
     ],
 
     Merchandiser_Display: [
-        { label: "Jumlah Kunjungan Toko", id: "kunjungan" },
+        { label: "Jumlah Toko Dikunjungi", id: "kunjungan" },
         { label: "Display Baru", id: "displayBaru" }
     ],
 
@@ -147,9 +135,7 @@ const reportingModules = {
 };
 
 
-// ======================
-// RENDER FORM DINAMIS
-// ======================
+// ================= RENDER FORM =================
 document.getElementById('posisi').addEventListener('change', function () {
     renderDynamicForm(this.value);
 });
@@ -160,7 +146,7 @@ function renderDynamicForm(posisi) {
 
     if (!reportingModules[posisi]) return;
 
-    let html = `<h6>SUMMARY KPI</h6>`;
+    let html = `<hr><h6>SUMMARY KPI</h6>`;
 
     reportingModules[posisi].forEach(item => {
         html += `
@@ -171,7 +157,7 @@ function renderDynamicForm(posisi) {
         `;
     });
 
-    // ===== KHUSUS KOL =====
+    // KHUSUS KOL
     if (posisi === "KOL_Affiliate") {
         html += `
         <hr>
@@ -203,9 +189,7 @@ function renderDynamicForm(posisi) {
 }
 
 
-// ======================
-// SUBMIT FORM
-// ======================
+// ================= SUBMIT =================
 document.getElementById('reportForm').onsubmit = async (e) => {
     e.preventDefault();
 
@@ -221,9 +205,9 @@ document.getElementById('reportForm').onsubmit = async (e) => {
         payload[input.id] = input.value;
     });
 
-    console.log(payload);
+    console.log("DATA DIKIRIM:", payload);
 
-    alert("Data siap dikirim (cek console)");
+    alert("Berhasil (cek console dulu)");
 };
 
 </script>

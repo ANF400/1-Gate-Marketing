@@ -54,7 +54,13 @@
             <label>DIVISI / POSISI</label>
             <select id="posisi" class="form-select" required>
                 <option value="" disabled selected>Pilih Divisi...</option>
+                <option value="Admin_Ecommerce">Admin Ecommerce</option>
+                <option value="Branding_Promotion">Branding & Promotion</option>
+                <option value="Graphic_Designer">Graphic Designer</option>
                 <option value="KOL_Affiliate">KOL & Affiliate</option>
+                <option value="Socmed_Specialist">Socmed Specialist</option>
+                <option value="Trade_Marketing_Sp">Trade Marketing Specialist</option>
+                <option value="Videographer">Videographer</option>
                 </select>
 
             <div id="dynamicForm"></div>
@@ -76,7 +82,6 @@
 <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-auth-compat.js"></script>
 
 <script>
-    // GANTI INI dengan URL Web App dari Google Apps Script kamu!
     const scriptURL = 'https://script.google.com/macros/s/AKfycbyF9tXkVZ_A9TnF2yDwN_4WJQDOL1unch50-SaLMDkB411dM3IUv8HdJzNrOwtpueSFog/exec';
 
     firebase.initializeApp({
@@ -89,7 +94,6 @@
     const provider = new firebase.auth.GoogleAuthProvider();
     let currentGps = "";
 
-    // Konfigurasi Field Khusus KOL & Affiliate
     const configForm = {
         KOL_Affiliate: [
             { label: "Jumlah KOL & Affiliator Lama", type: "number", id: "kol_lama" },
@@ -107,7 +111,6 @@
         ]
     };
 
-    // Fungsi Render Form
     document.getElementById('posisi').onchange = function() {
         const container = document.getElementById('dynamicForm');
         container.innerHTML = '<div class="section-divider"><span>DATA SPESIFIK POSISI</span></div>';
@@ -121,7 +124,6 @@
         }
     };
 
-    // Helper Konversi File ke Base64
     const toBase64 = file => new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
@@ -129,7 +131,6 @@
         reader.onerror = error => reject(error);
     });
 
-    // Submit Logic
     document.getElementById('reportForm').onsubmit = async (e) => {
         e.preventDefault();
         const btn = document.getElementById('submitBtn');
@@ -147,12 +148,10 @@
                 files: []
             };
 
-            // Ambil data teks dinamis
             document.querySelectorAll('.dyn-input').forEach(input => {
                 payload.extraData[input.id] = input.value;
             });
 
-            // Ambil & Konversi semua file (termasuk foto utama dan file dinamis)
             const fileInputs = [document.getElementById('fotoUtama'), ...document.querySelectorAll('.dyn-input-file')];
             for (let input of fileInputs) {
                 if (input.files[0]) {
@@ -161,7 +160,6 @@
                 }
             }
 
-            // Kirim ke Google Apps Script
             const response = await fetch(scriptURL, {
                 method: 'POST',
                 body: JSON.stringify(payload)
@@ -178,7 +176,6 @@
         }
     };
 
-    // (Fungsi GPS & Auth tetap sama seperti sebelumnya...)
     function checkGPS() {
         navigator.geolocation.getCurrentPosition(pos => {
             currentGps = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;

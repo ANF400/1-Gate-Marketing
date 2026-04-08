@@ -59,6 +59,7 @@
                 <option value="Graphic_Designer">Graphic Designer</option>
                 <option value="KOL_Affiliate">KOL & Affiliate</option>
                 <option value="Socmed_Specialist">Socmed Specialist</option>
+                <option value="TL_Event">TL Event</option>
                 <option value="Trade_Marketing_Sp">Trade Marketing Specialist</option>
                 <option value="Videographer">Videographer</option>
                 </select>
@@ -111,8 +112,31 @@
             { label: "Jumlah Klik Link", type: "number", id: "klik_link" },
             { label: "Screenshot Penjualan Platform", type: "file", id: "file_sales_dash" },
             { label: "Planning Bulan Depan", type: "textarea", id: "planning" }
-        ]
-    };
+        ],
+    TL_Event: [
+        { label: "Pilih Tipe Laporan Event", type: "select", id: "tipe_event", options: ["Event Publik (CFD/Bazar)", "Aktivitas Branding Toko", "Monthly Report"] },
+        
+        // --- SECTION: EVENT PUBLIK (Akan muncul semua, bisa difilter via logika manual jika mau) ---
+        { label: "Nama Event / Nama Toko", type: "text", id: "nama_lokasi_event" },
+        { label: "Jenis Event / Toko", type: "text", id: "jenis_event_toko" },
+        { label: "Lokasi Detail", type: "text", id: "lokasi_detail" },
+        
+        // --- DATA PENJUALAN ---
+        { label: "Total Penjualan (Rp)", type: "number", id: "total_penjualan" },
+        { label: "Jumlah Transaksi", type: "number", id: "jumlah_transaksi" },
+        { label: "Jumlah Sampling (Jika ada)", type: "number", id: "jumlah_sampling" },
+        
+        // --- BIAYA & DOKUMENTASI ---
+        { label: "Total Biaya Event (Rp)", type: "number", id: "biaya_event" },
+        { label: "Upload Bukti Biaya/Struk", type: "file", id: "file_biaya" },
+        { label: "Upload Foto Keramaian", type: "file", id: "file_keramaian" },
+        { label: "Upload Bukti Sell-Out / Rekap", type: "file", id: "file_sell_out" },
+        
+        // --- KHUSUS MONTHLY ---
+        { label: "Total Customer Baru (Khusus Monthly)", type: "number", id: "cust_baru" },
+        { label: "Planning Periode Depan", type: "textarea", id: "planning_event" }
+    ]
+};
 
     document.getElementById('posisi').onchange = function() {
         const container = document.getElementById('dynamicForm');
